@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".SettingFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Page Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textColor="#3F51B5" />
+
+        <!-- Pet Image -->
+        <ImageButton
+            android:id="@+id/ibPetImagePreview"
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:scaleType="centerCrop" />
+
+        <!-- Owner Details Section -->
+        <TextView
+            android:id="@+id/tvOwnerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner Information"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/tvBestOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner Name is the best owner ever!"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvOwnerEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: "
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvNotificationTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Time: 20:00"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/bChangeNotificationTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Notification Time"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#3F51B5"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <!-- Pet Details Section -->
+        <TextView
+            android:id="@+id/tvPetInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Information"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:id="@+id/tvPetName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Name: Buddy"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvPetType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Type: Dog"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <!-- Logout Button -->
+        <TextView
+            android:id="@+id/tvIsLeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Leader: "
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#B02737"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp" />
+    </LinearLayout>
+</ScrollView>

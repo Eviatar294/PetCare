@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="30dp"
+    android:gravity="center_vertical|center_horizontal"
+    tools:context=".NewPet">
+
+    <TextView
+        android:id="@+id/tvHello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="Welcome Eviatar," />
+
+    <TextView
+        android:id="@+id/tvNoPet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:text="Oops! Your pet’s still in sleep mode—connect to wake it up!" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="129dp"
+        app:srcCompat="@drawable/pets_photo" />
+
+    <FrameLayout
+        android:id="@+id/flNewPet"
+        android:layout_width="match_parent"
+        android:layout_height="303dp" />
+
+    <Button
+        android:id="@+id/bLogOutNoPet"
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#B02737"
+        android:text="Log out" />
+</LinearLayout>

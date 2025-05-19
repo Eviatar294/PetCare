@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Page Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tasks"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="#3F51B5" />
+
+    <!-- Main Filter Spinner -->
+    <Spinner
+        android:id="@+id/filterSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+    <!-- New Recurring Tasks Filter Spinner -->
+    <Spinner
+        android:id="@+id/recurringSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone" />
+
+    <!-- Date filter EditText (only shown when not filtering recurring tasks) -->
+    <EditText
+        android:id="@+id/etFilterDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date"
+        android:hint="filter by date" />
+
+    <!-- Search Task -->
+    <EditText
+        android:id="@+id/etSearchTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="search task" />
+
+    <!-- RecyclerView for tasks -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTasks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1" />
+
+    <!-- Button to create a new task -->
+    <ImageButton
+        android:id="@+id/ibNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="New Task"
+        android:layout_gravity="end"
+        android:layout_margin="16dp" />
+</LinearLayout>

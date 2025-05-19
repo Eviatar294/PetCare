@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tvTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Name"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvResponsibleName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Responsible: "
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due Date"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvDueTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due Time"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/llButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnComplete"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Complete"
+            android:textSize="12sp"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnEditTask"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textSize="12sp"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnDeleteTask"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textSize="12sp"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+</LinearLayout>
