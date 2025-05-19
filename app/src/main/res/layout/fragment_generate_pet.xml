@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".GeneratePetFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/etPetName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="pet name"
+                android:inputType="text" />
+
+            <EditText
+                android:layout_marginVertical="10dp"
+                android:id="@+id/etPetType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="pet type"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etPetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="pet password"
+                android:inputType="text" />
+
+            <ImageView
+                android:id="@+id/ivPetImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginVertical="20dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <Button
+                android:id="@+id/bUploadImage"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:text="Upload image" />
+
+            <Button
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/bCreatePet"
+                android:layout_width="297dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Create new pet" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,302 @@
+@startuml
+class UserAdapter {
+}
+class Pet {
+- String petId
+- String name
+- String petType
+- String imageString
+}
+
+class User {
+- {static} long serialVersionUID
+- String userId
+- String email
+- String name
+- String password
+- String petId
+- String petPassword
+- Integer numOfTasks
+}
+
+class SignInFragment {
+~ EditText etSignInEmail
+~ String stEmail
+~ Button bLogUser
+~ View view
+~ User user
+~ Pet myPet
+~ ArrayList<User> myUserList
+~ Context context
+~ CheckBox cbRememberMe
+}
+
+class SignUpFragment {
+~ EditText etName
+~ String stName
+~ Button bSaveUser
+~ View view
+~ User newUser
+~ Context context
+~ String userId
+}
+
+class MainSignIn {
+~ Button bSignIn
+~ Context context
+~ SignInFragment signInFragment
+~ SignUpFragment signUpFragment
+}
+
+class Task {
+- String taskId
+- String petId
+- String taskName
+- String assignedUserId
+- String dueDate
+- String dueTime
+- String status
+- String recurrenceType
+}
+
+class ConnectPetFragment {
+~ View view
+~ Context context
+~ Button bJoinPet
+~ EditText etEmailLeader
+~ String stEmailLeader
+~ String petId
+~ User myUser
+~ Pet myPet
+~ ArrayList<User> myUserList
+}
+
+class SettingFragment {
+- View view
+- Context context
+- ImageButton ibPetImagePreview
+- Button bLogOut
+- TextView tvBestOwner
+- Uri imageUri
+- String imageString
+- User user
+- Pet pet
+- ImagePickerHelper imagePickerHelper
+}
+
+class ChoosePetFragment {
+~ View view
+~ Context context
+~ Button bNewPet
+}
+
+class InternetReceiver {
+- {static} String TAG
+}
+
+class BaseActivity {
+- InternetReceiver internetReceiver
+}
+
+class TasksFragment {
+- Spinner filterSpinner
+- Spinner recurringSpinner
+- EditText etFilterDate
+- RecyclerView recyclerViewTasks
+- ImageButton ibNewTask
+- TaskAdapter taskAdapter
+- ArrayList<Task> allTasksList
+- DatabaseReference tasksRef
+- DatabaseReference usersRef
+- User user
+- Pet pet
+- ArrayList<User> usersList
+}
+
+class MainActivityWithInternet {
+~ Context context
+~ String userId
+~ User myUser
+~ Pet myPet
+~ ArrayList<User> myUserList
+- {static} String TAG
+}
+
+class MainHomeUser {
+~ BottomNavigationView bottomNavigationView
+~ Intent inIntent
+~ Bundle bundle
+~ User user
+~ Pet pet
+}
+
+class RecurringTaskGenerator {
+- {static} String DATE_FORMAT
+}
+
+class RecurringTaskReceiver {
+- {static} String TAG
+- {static} String CHANNEL_ID
+- {static} int NOTIFICATION_ID
+}
+
+class NewPet {
+~ ChoosePetFragment choosePetFragment
+~ TextView tvHello
+~ String stName
+~ User user
+~ Button bLogOutNoPet
+~ Context context
+}
+
+class NewTaskFragment {
+~ View view
+~ EditText etDate
+~ Spinner spinnerResponsible
+~ Button bCancelNewTask
+~ Context context
+~ ArrayList<User> usersList
+~ User user
+~ Pet pet
+~ FirebaseDatabase database
+~ DatabaseReference tasksRef
+}
+
+class ImagePickerHelper {
+- Fragment fragment
+- ImagePickerCallback callback
+- ActivityResultLauncher<Intent> galleryLauncher
+- ActivityResultLauncher<Intent> cameraLauncher
+- ActivityResultLauncher<String[]> permissionLauncher
+- Uri cameraImageUri
+}
+
+interface ImagePickerHelper$ImagePickerCallback {
+}
+class CreateNotificationChannel {
+}
+class TaskAdapter {
+- List<Task> tasks
+- String currentUserId
+- List<User> usersList
+- OnTaskCompleteListener completeListener
+- OnTaskEditListener editListener
+- OnTaskDeleteListener deleteListener
+}
+
+interface TaskAdapter$OnTaskCompleteListener {
+}
+interface TaskAdapter$OnTaskEditListener {
+}
+interface TaskAdapter$OnTaskDeleteListener {
+}
+class TaskAdapter$TaskViewHolder {
+~ TextView tvTaskName
+~ Button btnComplete
+}
+
+class TaskNotificationScheduler {
+}
+class GeneratePetFragment {
+~ View view
+~ FirebaseStorage storage
+~ DatabaseReference databaseReference
+~ String petId
+~ EditText etPetName
+~ Button bCreatePet
+~ ImageView ivPetImage
+~ Uri imageUri
+~ Pet newPet
+~ User user
+~ ArrayList<User> myUserList
+~ ImagePickerHelper imagePickerHelper
+}
+
+class FirebaseFunctions {
+}
+interface FirebaseFunctions$FetchUsersCallback {
+}
+interface FirebaseFunctions$GetUserCallback {
+}
+interface FirebaseFunctions$GetPetCallback {
+}
+class NewRecurringTaskFragment {
+- View view
+- EditText etTaskBody
+- Spinner spinnerRecurringType
+- Button bCancel
+- Context context
+- User user
+- Pet pet
+- ArrayList<User> usersList
+- FirebaseDatabase database
+- DatabaseReference tasksRef
+}
+
+class MainActivity {
+~ Context context
+~ String userId
+~ User myUser
+~ Pet myPet
+~ ArrayList<User> myUserList
+- {static} String TAG
+}
+
+class TaskReminderReceiver {
+- {static} String CHANNEL_ID
+}
+
+class NoInternetActivity {
+- Button bRetry
+- TextView tvConnectionStatus
+- {static} String TAG
+}
+
+class LeaderboardFragment {
+- ArrayList<User> usersList
+- ListView listView
+- UserAdapter adapter
+- DatabaseReference usersRef
+- User currentUser
+- Pet pet
+- View view
+- {static} String TAG
+}
+
+
+
+ArrayAdapter <|-- UserAdapter
+Serializable <|.. Pet
+Serializable <|.. User
+Fragment <|-- SignInFragment
+Fragment <|-- SignUpFragment
+BaseActivity <|-- MainSignIn
+Fragment <|-- ConnectPetFragment
+Fragment <|-- SettingFragment
+Fragment <|-- ChoosePetFragment
+BroadcastReceiver <|-- InternetReceiver
+AppCompatActivity <|-- BaseActivity
+Fragment <|-- TasksFragment
+BaseActivity <|-- MainActivityWithInternet
+BaseActivity <|-- MainHomeUser
+BroadcastReceiver <|-- RecurringTaskReceiver
+BaseActivity <|-- NewPet
+Fragment <|-- NewTaskFragment
+ImagePickerHelper +.. ImagePickerHelper$ImagePickerCallback
+Application <|-- CreateNotificationChannel
+Adapter <|-- TaskAdapter
+TaskAdapter +.. TaskAdapter$OnTaskCompleteListener
+TaskAdapter +.. TaskAdapter$OnTaskEditListener
+TaskAdapter +.. TaskAdapter$OnTaskDeleteListener
+TaskAdapter +.. TaskAdapter$TaskViewHolder
+ViewHolder <|-- TaskAdapter$TaskViewHolder
+Fragment <|-- GeneratePetFragment
+FirebaseFunctions +.. FirebaseFunctions$FetchUsersCallback
+FirebaseFunctions +.. FirebaseFunctions$GetUserCallback
+FirebaseFunctions +.. FirebaseFunctions$GetPetCallback
+Fragment <|-- NewRecurringTaskFragment
+BaseActivity <|-- MainActivity
+BroadcastReceiver <|-- TaskReminderReceiver
+AppCompatActivity <|-- NoInternetActivity
+Fragment <|-- LeaderboardFragment
+@enduml
