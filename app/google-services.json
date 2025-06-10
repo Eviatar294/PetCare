@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "753518070410",
+    "firebase_url": "https://petcare-f3010-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "petcare-f3010",
+    "storage_bucket": "petcare-f3010.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753518070410:android:40f4902b57c4931fa23b73",
+        "android_client_info": {
+          "package_name": "com.example.petcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1uPSoHJeRvvrUz5bXZggFE82HSybsYIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

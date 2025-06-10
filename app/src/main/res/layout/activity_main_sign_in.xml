@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:weightSum="10"
+    tools:context=".MainSignIn">
+
+    <!-- Frame Layout for Sign In/Up Forms -->
+
+    <FrameLayout
+        android:id="@+id/flSign"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:layout_marginHorizontal="30dp"/>
+
+    <!-- Buttons Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <!-- Sign In Button -->
+        <Button
+            android:id="@+id/bSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#B02737"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            app:cornerRadius="8dp"/>
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/bSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#8E1C2B"
+            android:padding="12dp"
+            app:cornerRadius="8dp"/>
+    </LinearLayout>
+
+</LinearLayout>

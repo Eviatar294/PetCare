@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".SettingFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Page Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textColor="#3F51B5" />
+
+        <!-- Pet Image -->
+        <ImageButton
+            android:id="@+id/ibPetImagePreview"
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/white"
+            android:scaleType="centerCrop" />
+
+        <!-- Owner Details Section -->
+        <TextView
+            android:id="@+id/tvOwnerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner Information"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/tvBestOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner Name is the best owner ever!"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvOwnerEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: "
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <!-- User Password Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvUserPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Password: ********"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/ibToggleUserPassword"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_view"
+                android:contentDescription="Toggle user password visibility" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvNotificationTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Time: 20:00"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/bChangeNotificationTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Notification Time"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#3F51B5"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <!-- Pet Details Section -->
+        <TextView
+            android:id="@+id/tvPetInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Information"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:id="@+id/tvPetName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Name: Buddy"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvPetType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Type: Dog"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvIsLeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Leader: "
+            android:textSize="18sp" />
+
+        <!-- Admin Section (Pet Password) -->
+        <LinearLayout
+            android:id="@+id/layoutAdminSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin Section"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FF4081" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvPetPassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pet Password: ********"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/ibTogglePetPassword"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_view"
+                    android:contentDescription="Toggle pet password visibility" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Disconnect Button -->
+        <Button
+            android:id="@+id/btnDisconnectPet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disconnect from Pet"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF0000"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
+</ScrollView>
