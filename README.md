@@ -24,10 +24,9 @@
 - **Motivation System**: Encourage engagement through friendly competition
 
 ### 🔔 **Smart Notifications**
-- **Task Reminders**: Get notified when tasks are due
 - **Daily Summaries**: Customizable notification time for daily task overviews
-- **Recurring Alerts**: Automatic notifications for recurring tasks
-- **Unassigned Task Alerts**: Reminders for tasks that need volunteers
+- **Unassigned Task Alerts**: Daily reminders for tasks that need volunteers tomorrow
+- **Focused Notifications**: Only essential notifications to avoid notification fatigue
 
 ### 🐕 **Pet Profile Management**
 - **Pet Information**: Store name, type, and photos
@@ -99,8 +98,8 @@ cd PetCare
 
 ### Notifications
 1. **Set Notification Time**: Go to Settings → Change Notification Time
-2. **Task Reminders**: Automatic alerts 30 minutes before due time
-3. **Daily Summary**: Evening notification with tomorrow's unassigned tasks
+2. **Daily Summary**: Evening notification with tomorrow's unassigned tasks
+3. **Focused Approach**: Only essential notifications to help you stay organized
 
 ### Pet Management (Admin Only)
 1. **Edit Pet Profile**: Update name, type, and photo
@@ -163,9 +162,9 @@ PetCare/
 - **Offline Support**: App works offline with sync when reconnected
 
 ### Notification System
-- **Intelligent Reminders**: Context-aware notifications
+- **Daily Summaries**: Single daily notification with tomorrow's unassigned tasks
 - **Customizable Timing**: Set your preferred notification schedule
-- **Batch Notifications**: Daily summaries to reduce notification fatigue
+- **Notification Focus**: Only essential alerts to reduce notification fatigue
 
 ## 🔒 Privacy & Security
 

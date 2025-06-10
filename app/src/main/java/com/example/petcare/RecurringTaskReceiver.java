@@ -1,16 +1,11 @@
 package com.example.petcare;
 
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,14 +21,14 @@ import java.util.Locale;
 
 public class RecurringTaskReceiver extends BroadcastReceiver {
     private static final String TAG = "RecurringTaskReceiver";
-    private static final int NOTIFICATION_ID = 1001;
+    // REMOVED: NOTIFICATION_ID constant - no longer needed since we're not showing notifications
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "RecurringTaskReceiver triggered");
         processRecurringTasks(context);
         scheduleNextAlarm(context);
-        showNotification(context);
+        // Removed showNotification(context) - no more individual task notifications
     }
 
     private void processRecurringTasks(Context context) {
@@ -149,17 +144,6 @@ public class RecurringTaskReceiver extends BroadcastReceiver {
         }
     }
 
-    private void showNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CreateNotificationChannel.RECURRING_TASK_CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_popup_reminder)
-                .setContentTitle("Recurring Tasks Updated")
-                .setContentText("New task instances have been added for the upcoming week.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if (notificationManager != null) {
-            notificationManager.notify(NOTIFICATION_ID, builder.build());
-        }
-    }
+    // REMOVED: showNotification method - no longer showing notifications for recurring task processing
+    // This eliminates individual task notifications while keeping the daily summary for unassigned tasks
 }
