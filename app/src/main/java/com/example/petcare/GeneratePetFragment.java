@@ -141,6 +141,9 @@ public class GeneratePetFragment extends Fragment {
         try {
             base64 = convertUriToBase64(imageUri);
             newPet.setImageString(base64);
+            
+            // Also save the image to local storage for immediate display
+            savePetImageToInternalStorage(imageUri);
         } catch (IOException e) {
             Toast.makeText(getContext(),
                             "Image encoding failed: " + e.getMessage(),
@@ -176,22 +179,15 @@ public class GeneratePetFragment extends Fragment {
                         .show();
                 return;
             }
-            moveToNextPage();
+            // ✅ Owner-link successful → update local user object and get users list
+            user.setPetId(petId);
+            user.setPetPassword(petPassword);
+            
+            // Add a small delay to ensure Firebase propagation before fetching users list
+            new android.os.Handler().postDelayed(() -> {
+                getUserList(petId);
+            }, 500); // 500ms delay
         });
-    }
-
-    private void uploadImageToFirebase(Uri imageUri) {
-        if (imageUri == null) return;
-        try {
-            // Call the local conversion method.
-            imageString = convertUriToBase64(imageUri);
-            newPet.setImageString(imageString);
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference petsRef = database.getReference("Pets");
-            petsRef.child(petId).child("imageString").setValue(imageString);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void updateOwnerPet(String userId, String petId, String petPassword,
@@ -215,18 +211,55 @@ public class GeneratePetFragment extends Fragment {
     }
 
     private void getUserList(String petId) {
+        android.util.Log.d("GeneratePetFragment", "Fetching users for petId: " + petId);
         FirebaseFunctions.fetchUsersWithSamePetId(petId, new FirebaseFunctions.FetchUsersCallback() {
             @Override
             public void onSuccess(ArrayList<User> userList) {
+                android.util.Log.d("GeneratePetFragment", "Successfully fetched " + userList.size() + " users");
                 myUserList = userList;
+                // Ensure current user is in the list
+                boolean userExists = false;
+                for (User u : myUserList) {
+                    android.util.Log.d("GeneratePetFragment", "Found user: " + u.getName() + " with ID: " + u.getUserId());
+                    if (u.getUserId().equals(user.getUserId())) {
+                        userExists = true;
+                        break;
+                    }
+                }
+                if (!userExists) {
+                    android.util.Log.d("GeneratePetFragment", "Adding current user to list: " + user.getName());
+                    myUserList.add(user);
+                }
+                android.util.Log.d("GeneratePetFragment", "Final user list size: " + myUserList.size());
                 moveToNextPage();
             }
             @Override
-            public void onFailure(String errorMessage) { }
+            public void onFailure(String errorMessage) {
+                android.util.Log.e("GeneratePetFragment", "Failed to fetch users: " + errorMessage);
+                // If fetching users fails, at least add the current user to the list
+                myUserList.clear();
+                myUserList.add(user);
+                android.util.Log.d("GeneratePetFragment", "Added current user to empty list, size: " + myUserList.size());
+                moveToNextPage();
+            }
         });
     }
 
     private void moveToNextPage() {
+        // Clear the heavy imageString from the pet after saving to avoid memory issues
+        if (newPet != null && newPet.getImageString() != null) {
+            newPet.setImageString("");
+        }
+        
+        // Show success toast
+        Toast.makeText(getContext(), "Pet created successfully! Welcome to PetCare!", Toast.LENGTH_LONG).show();
+        
+        android.util.Log.d("GeneratePetFragment", "Moving to next page with:");
+        android.util.Log.d("GeneratePetFragment", "User: " + (user != null ? user.getName() : "null"));
+        android.util.Log.d("GeneratePetFragment", "User has petPassword: " + (user != null && user.getPetPassword() != null && !user.getPetPassword().isEmpty()));
+        android.util.Log.d("GeneratePetFragment", "Pet: " + (newPet != null ? newPet.getName() : "null"));
+        android.util.Log.d("GeneratePetFragment", "Users list size: " + (myUserList != null ? myUserList.size() : 0));
+        
         Intent intent = new Intent(getActivity(), MainHomeUser.class);
         intent.putExtra("user", user);
         intent.putExtra("pet", newPet);
@@ -250,5 +283,25 @@ public class GeneratePetFragment extends Fragment {
         bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+    }
+
+    private void savePetImageToInternalStorage(Uri imageUri) {
+        if (getContext() == null || imageUri == null) return;
+        
+        try {
+            android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(
+                getContext().getContentResolver().openInputStream(imageUri));
+            if (bitmap == null) {
+                return;
+            }
+            
+            java.io.File file = new java.io.File(getContext().getFilesDir(), "pet_image.png");
+            java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (java.io.IOException e) {
+            android.util.Log.e("GeneratePetFragment", "Error saving image locally: " + e.getMessage());
+        }
     }
 }

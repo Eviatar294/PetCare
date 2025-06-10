@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="pet password"
-                android:inputType="text" />
+                android:inputType="textPassword" />
 
             <ImageView
                 android:id="@+id/ivPetImage"

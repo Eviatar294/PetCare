@@ -336,7 +336,7 @@ public class SettingFragment extends Fragment {
         Log.d("SettingFragment", "Checking for pet image at: " + petImageFile.getAbsolutePath());
         Log.d("SettingFragment", "File exists: " + petImageFile.exists());
 
-        if (petImageFile.exists() && pet != null && pet.getImageString() != null) {
+        if (petImageFile.exists()) {
             // Clear any existing cache first
             Glide.get(getContext()).clearMemory();
             
@@ -348,7 +348,7 @@ public class SettingFragment extends Fragment {
                     .circleCrop()
                     .into(ibPetImagePreview);
         } else {
-            Log.d("SettingFragment", "Loading default image because file doesn't exist or image string is null");
+            Log.d("SettingFragment", "Loading default image because file doesn't exist");
             loadDefaultImage();
         }
     }
@@ -641,6 +641,15 @@ public class SettingFragment extends Fragment {
 
     private void disconnectUserAndCleanup() {
         if (user == null) return;
+
+        // Delete pet image from internal storage
+        if (getContext() != null) {
+            File petImageFile = new File(getContext().getFilesDir(), "pet_image.png");
+            if (petImageFile.exists()) {
+                boolean deleted = petImageFile.delete();
+                Log.d("SettingFragment", "Pet image deleted from internal storage: " + deleted);
+            }
+        }
 
         // Delete user's tasks
         FirebaseDatabase.getInstance()
