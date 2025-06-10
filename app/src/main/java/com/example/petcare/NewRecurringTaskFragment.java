@@ -165,15 +165,14 @@ public class NewRecurringTaskFragment extends Fragment {
         }
 
         Task newTask = new Task(taskName, pet.getPetId(), "", dueDate, dueTime, "pending", recurrenceType);
+        // lastGeneratedDate will be null initially, so RecurringTaskUtils will start generating from today
 
         String taskId = tasksRef.push().getKey();
         tasksRef.child(taskId).setValue(newTask)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(context, "Recurring task created successfully", Toast.LENGTH_SHORT).show();
-                    // Generate recurring task instances for the next week.
-                    if (pet != null && pet.getPetId() != null && !pet.getPetId().isEmpty()) {
-                        RecurringTaskGenerator.generateRecurringTaskInstances(pet.getPetId());
-                    }
+                    // Generate task instances immediately for the next 7 days
+                    RecurringTaskUtils.generateRecurringTaskInstancesForNext7Days(pet.getPetId());
                     clearFields();
                 })
                 .addOnFailureListener(e -> {

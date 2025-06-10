@@ -127,6 +127,9 @@ public class MainActivity extends BaseActivity {
                                 // Clear the image string after saving to avoid memory issues
                                 myPet.setImageString("");
                                 
+                                // Generate recurring task instances for the next 7 days on login
+                                RecurringTaskUtils.generateRecurringTaskInstancesForNext7Days(petId);
+                                
                                 FirebaseFunctions.fetchUsersWithSamePetId(petId, new FirebaseFunctions.FetchUsersCallback() {
                                     @Override
                                     public void onSuccess(ArrayList<User> userList) {
@@ -236,6 +239,8 @@ public class MainActivity extends BaseActivity {
             return null;
         }
     }
+
+    // Recurring task generation is now handled by RecurringTaskUtils utility class
 
     private void navigateToNextActivity() {
         if (myUser != null) {

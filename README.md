@@ -50,7 +50,7 @@
 - **UI Framework**: Material Design Components
 - **Image Loading**: Glide
 - **Notifications**: Android Notification API
-- **Architecture**: Fragment-based with MVVM patterns
+- **Architecture**: Fragment-based with efficient login-based task generation
 
 ## 📋 Prerequisites
 
@@ -137,7 +137,7 @@ PetCare/
 │   │   ├── FirebaseFunctions.java # Database operations
 │   │   ├── ImagePickerHelper.java # Camera/Gallery integration
 │   │   ├── TaskNotificationScheduler.java # Notification system
-│   │   └── RecurringTaskGenerator.java # Recurring task logic
+│   │   └── RecurringTaskUtils.java # Recurring task generation utility
 │   └── receivers/
 │       ├── TaskReminderReceiver.java # Notification handling
 │       └── InternetReceiver.java     # Network monitoring
@@ -153,12 +153,13 @@ PetCare/
 ### Task Management System
 - **One-time Tasks**: Perfect for vet appointments, grooming sessions
 - **Recurring Tasks**: Daily feeding, weekly walks, monthly check-ups
+- **Smart Generation**: Tracks last generated date to respect user deletions
 - **Smart Filtering**: Find exactly what you need quickly
 - **Assignment Flexibility**: Assign to specific users or keep open
 
 ### Real-time Collaboration
 - **Live Updates**: Changes sync instantly across all connected devices
-- **Conflict Resolution**: Smart handling of simultaneous edits
+- **Login-based Generation**: Recurring tasks generated efficiently on each app login
 - **Offline Support**: App works offline with sync when reconnected
 
 ### Notification System

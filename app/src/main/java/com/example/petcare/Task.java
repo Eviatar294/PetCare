@@ -12,6 +12,7 @@ public class Task {
 
     // New fields for recurrence
     private String recurrenceType;  // "none", "daily", or "SUNDAY/MONDAY/.../SATURDAY"
+    private String lastGeneratedDate; // Last date up to which instances were generated (for recurring templates only)
 
     // Default constructor (required for Firebase)
     public Task() {}
@@ -87,5 +88,13 @@ public class Task {
     }
     public void setRecurrenceType(String recurrenceType) {
         this.recurrenceType = recurrenceType;
+    }
+    
+    public String getLastGeneratedDate() {
+        return lastGeneratedDate;
+    }
+    
+    public void setLastGeneratedDate(String lastGeneratedDate) {
+        this.lastGeneratedDate = lastGeneratedDate;
     }
 }

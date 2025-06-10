@@ -41,10 +41,8 @@ public class MainHomeUser extends BaseActivity {
         // Initialize components and retrieve user, pet, and usersList data.
         initComponents();
 
-        // Generate recurring task instances for the next week.
-        if (pet != null && pet.getPetId() != null && !pet.getPetId().isEmpty()) {
-            RecurringTaskGenerator.generateRecurringTaskInstances(pet.getPetId());
-        }
+        // Recurring task instances are now generated on login in MainActivity
+        // No need for separate generation here
 
         // Schedule daily task notification at 8 PM.
         TaskNotificationScheduler.scheduleTaskReminder(this, user);
