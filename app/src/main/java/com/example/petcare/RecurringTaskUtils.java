@@ -43,19 +43,24 @@ public class RecurringTaskUtils {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         Calendar today = Calendar.getInstance();
                         
-                        // We want to generate exactly 7 days starting from the appropriate start date
-                        
                         DatabaseReference tasksRef = FirebaseDatabase.getInstance().getReference("Tasks");
                         int instancesCreated = 0;
                         
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             Task template = ds.getValue(Task.class);
                             if (template != null && petId.equals(template.getPetId()) && 
-                                "daily".equalsIgnoreCase(template.getRecurrenceType())) {
+                                isRecurringTask(template.getRecurrenceType())) {
                                 
+                                String recurrenceType = template.getRecurrenceType();
                                 String lastGenerated = template.getLastGeneratedDate();
                                 Calendar startDate = Calendar.getInstance();
                                 boolean isNewTemplate = (lastGenerated == null || lastGenerated.isEmpty());
+                                
+                                Log.d(TAG, "=== Processing template: " + template.getTaskName() + " ===");
+                                Log.d(TAG, "RecurrenceType: " + recurrenceType);
+                                Log.d(TAG, "LastGeneratedDate: " + lastGenerated);
+                                Log.d(TAG, "IsNewTemplate: " + isNewTemplate);
+                                Log.d(TAG, "Today: " + sdf.format(Calendar.getInstance().getTime()));
                                 
                                 if (!isNewTemplate) {
                                     // Start generating from the day after lastGeneratedDate
@@ -73,49 +78,137 @@ public class RecurringTaskUtils {
                                     Log.d(TAG, "New template '" + template.getTaskName() + "': starting from today: " + sdf.format(startDate.getTime()));
                                 }
                                 
-                                // Generate instances starting from startDate
-                                Calendar currentDate = (Calendar) startDate.clone();
-                                String latestGenerated = lastGenerated; // Track the latest date we generate
+                                // Generate instances based on recurrence type
+                                String latestGenerated = lastGenerated;
+                                int instancesForThisTemplate = 0;
                                 
-                                // Always try to ensure we have tasks for the next 7 days
-                                int targetInstanceCount = 7;
+                                // Calculate the end date: today + 6 days (7 days total including today)
+                                Calendar endDate = Calendar.getInstance();
+                                endDate.add(Calendar.DAY_OF_MONTH, 6);
+                                String endDateStr = sdf.format(endDate.getTime());
                                 
-                                Calendar maxEndDate = Calendar.getInstance();
-                                maxEndDate.add(Calendar.DAY_OF_MONTH, 6); // Today + 6 more days = 7 days total
+                                Log.d(TAG, "End date calculated: " + endDateStr);
                                 
-                                int daysGenerated = 0;
-                                while (!currentDate.after(maxEndDate) && daysGenerated < targetInstanceCount) {
-                                    String dateStr = sdf.format(currentDate.getTime());
-                                    
-                                    // Create instance for this date
-                                    Task instance = new Task(
-                                        template.getTaskName(),
-                                        template.getPetId(),
-                                        template.getAssignedUserId(),
-                                        dateStr,
-                                        template.getDueTime(),
-                                        "pending"
-                                    );
-                                    instance.setRecurrenceType("none"); // Instances are one-time tasks
-                                    
-                                    String instanceId = tasksRef.push().getKey();
-                                    if (instanceId != null) {
-                                        tasksRef.child(instanceId).setValue(instance);
-                                        instancesCreated++;
-                                        daysGenerated++;
-                                        latestGenerated = dateStr;
-                                        Log.d(TAG, "Created task instance " + daysGenerated + "/7: " + template.getTaskName() + " for " + dateStr);
+                                // Determine the start date for generation
+                                Calendar generationStartDate;
+                                if (!isNewTemplate) {
+                                    // Start from the day after lastGeneratedDate
+                                    try {
+                                        generationStartDate = Calendar.getInstance();
+                                        generationStartDate.setTime(sdf.parse(lastGenerated));
+                                        generationStartDate.add(Calendar.DAY_OF_MONTH, 1);
+                                        Log.d(TAG, "Existing template '" + template.getTaskName() + "': generating from " + sdf.format(generationStartDate.getTime()) + " to " + endDateStr);
+                                    } catch (Exception e) {
+                                        Log.e(TAG, "Error parsing lastGeneratedDate: " + lastGenerated + ", starting from today", e);
+                                        generationStartDate = Calendar.getInstance();
                                     }
-                                    
-                                    currentDate.add(Calendar.DAY_OF_MONTH, 1);
+                                } else {
+                                    // New template: start from today
+                                    generationStartDate = Calendar.getInstance();
+                                    Log.d(TAG, "New template '" + template.getTaskName() + "': generating from " + sdf.format(generationStartDate.getTime()) + " to " + endDateStr);
                                 }
                                 
-                                // Update the template's lastGeneratedDate to the latest date we generated
-                                Log.d(TAG, "Template '" + template.getTaskName() + "': generated " + daysGenerated + " instances");
+                                // Skip generation if start date is already beyond end date
+                                if (generationStartDate.after(endDate)) {
+                                    Log.d(TAG, "Skipping template '" + template.getTaskName() + "': start date " + sdf.format(generationStartDate.getTime()) + " is beyond end date " + endDateStr);
+                                    continue;
+                                }
+                                
+                                Log.d(TAG, "Proceeding with generation for '" + template.getTaskName() + "'");
+                                
+                                if ("daily".equalsIgnoreCase(recurrenceType)) {
+                                    // Daily tasks: create instance for each day from start to end
+                                    Calendar currentDate = (Calendar) generationStartDate.clone();
+                                    while (!currentDate.after(endDate)) {
+                                        String dateStr = sdf.format(currentDate.getTime());
+                                        
+                                        // Create instance for this date
+                                        Task instance = new Task(
+                                            template.getTaskName(),
+                                            template.getPetId(),
+                                            template.getAssignedUserId(),
+                                            dateStr,
+                                            template.getDueTime(),
+                                            "pending"
+                                        );
+                                        instance.setRecurrenceType("none"); // Instances are one-time tasks
+                                        
+                                        String instanceId = tasksRef.push().getKey();
+                                        if (instanceId != null) {
+                                            tasksRef.child(instanceId).setValue(instance);
+                                            instancesCreated++;
+                                            instancesForThisTemplate++;
+                                            latestGenerated = dateStr;
+                                            Log.d(TAG, "Created daily task instance: " + template.getTaskName() + " for " + dateStr);
+                                        }
+                                        
+                                        currentDate.add(Calendar.DAY_OF_MONTH, 1);
+                                    }
+                                } else if (isWeeklyRecurrenceType(recurrenceType)) {
+                                    // Weekly tasks: create instance for matching days from start to end
+                                    int targetDayOfWeek = getDayOfWeekFromRecurrenceType(recurrenceType);
+                                    if (targetDayOfWeek != -1) {
+                                        Calendar currentDate = (Calendar) generationStartDate.clone();
+                                        while (!currentDate.after(endDate)) {
+                                            if (currentDate.get(Calendar.DAY_OF_WEEK) == targetDayOfWeek) {
+                                                String dateStr = sdf.format(currentDate.getTime());
+                                                
+                                                // Create instance for this date
+                                                Task instance = new Task(
+                                                    template.getTaskName(),
+                                                    template.getPetId(),
+                                                    template.getAssignedUserId(),
+                                                    dateStr,
+                                                    template.getDueTime(),
+                                                    "pending"
+                                                );
+                                                instance.setRecurrenceType("none"); // Instances are one-time tasks
+                                                
+                                                String instanceId = tasksRef.push().getKey();
+                                                if (instanceId != null) {
+                                                    tasksRef.child(instanceId).setValue(instance);
+                                                    instancesCreated++;
+                                                    instancesForThisTemplate++;
+                                                    latestGenerated = dateStr;
+                                                    Log.d(TAG, "Created weekly task instance: " + template.getTaskName() + " for " + dateStr + " (" + recurrenceType + ")");
+                                                }
+                                            }
+                                            currentDate.add(Calendar.DAY_OF_MONTH, 1);
+                                        }
+                                    }
+                                } else {
+                                    Log.w(TAG, "Unknown recurrence type: " + recurrenceType + " for task: " + template.getTaskName());
+                                }
+                                
+                                // Update lastGeneratedDate to the end date to mark this period as processed
+                                if (instancesForThisTemplate > 0) {
+                                    // If instances were created, set to end date
+                                    latestGenerated = endDateStr;
+                                    Log.d(TAG, "Template '" + template.getTaskName() + "': generated " + instancesForThisTemplate + " instances, updating lastGeneratedDate to " + endDateStr);
+                                } else if (isNewTemplate) {
+                                    // For new templates with no instances, still set lastGeneratedDate to prevent future duplicate checks
+                                    latestGenerated = endDateStr;
+                                    Log.d(TAG, "New template '" + template.getTaskName() + "': no instances generated, but setting lastGeneratedDate to " + endDateStr + " to mark period as processed");
+                                }
+                                
+                                // Update the template's lastGeneratedDate
                                 if (latestGenerated != null && !latestGenerated.equals(lastGenerated)) {
                                     template.setLastGeneratedDate(latestGenerated);
-                                    tasksRef.child(ds.getKey()).setValue(template);
-                                    Log.d(TAG, "Updated lastGeneratedDate for template '" + template.getTaskName() + "' to: " + latestGenerated);
+                                    
+                                    // Create final variables for lambda
+                                    final String finalLatestGenerated = latestGenerated;
+                                    final String finalTaskName = template.getTaskName();
+                                    
+                                    tasksRef.child(ds.getKey()).setValue(template)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Log.d(TAG, "SUCCESS: Firebase updated for template '" + finalTaskName + "' lastGeneratedDate = '" + finalLatestGenerated + "'");
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e(TAG, "FAILED: Firebase update failed for template '" + finalTaskName + "': " + e.getMessage());
+                                            });
+                                    Log.d(TAG, "UPDATED Firebase: Template '" + template.getTaskName() + "' lastGeneratedDate changed from '" + lastGenerated + "' to '" + latestGenerated + "'");
+                                } else {
+                                    Log.d(TAG, "NO UPDATE: Template '" + template.getTaskName() + "' lastGeneratedDate remains '" + lastGenerated + "'");
                                 }
                             }
                         }
@@ -128,5 +221,48 @@ public class RecurringTaskUtils {
                         Log.e(TAG, "Error generating recurring task instances: " + error.getMessage());
                     }
                 });
+    }
+
+    /**
+     * Helper method to check if a task is a recurring task
+     */
+    private static boolean isRecurringTask(String recurrenceType) {
+        if (recurrenceType == null) return false;
+        return "daily".equalsIgnoreCase(recurrenceType) || 
+               "MONDAY".equalsIgnoreCase(recurrenceType) ||
+               "TUESDAY".equalsIgnoreCase(recurrenceType) ||
+               "WEDNESDAY".equalsIgnoreCase(recurrenceType) ||
+               "THURSDAY".equalsIgnoreCase(recurrenceType) ||
+               "FRIDAY".equalsIgnoreCase(recurrenceType) ||
+               "SATURDAY".equalsIgnoreCase(recurrenceType) ||
+               "SUNDAY".equalsIgnoreCase(recurrenceType);
+    }
+
+    /**
+     * Helper method to convert recurrence type to Calendar day of week constant
+     */
+    private static int getDayOfWeekFromRecurrenceType(String recurrenceType) {
+        if (recurrenceType == null) return -1;
+        switch (recurrenceType.toUpperCase()) {
+            case "SUNDAY": return Calendar.SUNDAY;
+            case "MONDAY": return Calendar.MONDAY;
+            case "TUESDAY": return Calendar.TUESDAY;
+            case "WEDNESDAY": return Calendar.WEDNESDAY;
+            case "THURSDAY": return Calendar.THURSDAY;
+            case "FRIDAY": return Calendar.FRIDAY;
+            case "SATURDAY": return Calendar.SATURDAY;
+            default: return -1;
+        }
+    }
+
+    private static boolean isWeeklyRecurrenceType(String recurrenceType) {
+        if (recurrenceType == null) return false;
+        return "MONDAY".equalsIgnoreCase(recurrenceType) ||
+               "TUESDAY".equalsIgnoreCase(recurrenceType) ||
+               "WEDNESDAY".equalsIgnoreCase(recurrenceType) ||
+               "THURSDAY".equalsIgnoreCase(recurrenceType) ||
+               "FRIDAY".equalsIgnoreCase(recurrenceType) ||
+               "SATURDAY".equalsIgnoreCase(recurrenceType) ||
+               "SUNDAY".equalsIgnoreCase(recurrenceType);
     }
 } 

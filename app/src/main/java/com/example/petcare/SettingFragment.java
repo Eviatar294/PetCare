@@ -678,14 +678,14 @@ public class SettingFragment extends Fragment {
                 .child(user.getUserId());
 
         Map<String, Object> updates = new HashMap<>();
-        updates.put("petId", null);
-        updates.put("petPassword", null);
+        updates.put("petId", "");
+        updates.put("petPassword", "");
 
         userRef.updateChildren(updates)
                 .addOnSuccessListener(aVoid -> {
                     // Clear local user data
-                    user.setPetId(null);
-                    user.setPetPassword(null);
+                    user.setPetId("");
+                    user.setPetPassword("");
                     
                     Toast.makeText(getContext(), 
                         "Successfully disconnected from pet", 

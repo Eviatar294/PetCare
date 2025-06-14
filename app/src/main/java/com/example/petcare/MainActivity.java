@@ -44,6 +44,9 @@ public class MainActivity extends BaseActivity {
 
         initComponents();
 
+        // Ensure notification channels are created
+        PetCareApplication.ensureNotificationChannelsExist(this);
+        
         // Check for notification permission.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -83,6 +86,8 @@ public class MainActivity extends BaseActivity {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "Notification permission granted.");
+                // Ensure notification channels are created now that permission is granted
+                PetCareApplication.ensureNotificationChannelsExist(this);
             } else {
                 Log.e(TAG, "Notification permission denied.");
             }

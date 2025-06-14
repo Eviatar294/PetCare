@@ -81,12 +81,16 @@ public class SignInFragment extends Fragment {
                             String userId = null;
 
                             for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                // Get the user id and object
                                 userId = userSnapshot.getKey();
                                 user = userSnapshot.getValue(User.class);
 
                                 String email = userSnapshot.child("email").getValue(String.class);
                                 String password = userSnapshot.child("password").getValue(String.class);
+
+                                // Defensive: skip if any are null
+                                if (email == null || password == null || stEmail == null || stPassword == null) {
+                                    continue;
+                                }
 
                                 if (email.equals(stEmail) && password.equals(stPassword)) {
                                     userFound = true;
@@ -102,7 +106,7 @@ public class SignInFragment extends Fragment {
                                 Toast.makeText(context, "Log in successfully.", Toast.LENGTH_SHORT).show();
                                 // Check if the user already has a pet
                                 String petId = user.getPetId();
-                                if (!petId.equals("")) {
+                                if (petId != null && !petId.isEmpty()) {
                                     FirebaseFunctions.getPetClassFromFirebase(petId, new FirebaseFunctions.GetPetCallback() {
                                         @Override
                                         public void onSuccess(Pet pet) {
